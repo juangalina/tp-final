@@ -13,14 +13,14 @@ class Pistola {
   }
   
   void setPos(float posX) {
-    x = posX - imagen.width/2;
+    x = posX - imagen.width / 2;
   }
   
   float getX() {
-    return x + imagen.width/2;
+    return x + imagen.width / 2;
   }
   
   float getY() {
-    return y + imagen.height/2;
+    return y + imagen.height / 2;
   }
 }
