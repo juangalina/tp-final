@@ -11,9 +11,9 @@ class SpawnerPatos {
   
   void spawnPatos() {
     for (int i = 0; i < 5; i++) {
-      patos.add(new Pato(-random(100, 100), height/6, imgPato));  // Patos en la fila superior
-      patos.add(new Pato(-random(100, 100), height/2, imgPato));  // Patos en la fila central
-      patos.add(new Pato(-random(100, 100), 5 * height/6, imgPato));  // Patos en la fila inferior
+      patos.add(new Pato(-random(100, 5500), height/6, imgPato));  // Patos en la fila superior
+      patos.add(new Pato(-random(100, 5500), height/2, imgPato));  // Patos en la fila central
+      patos.add(new Pato(-random(100, 5500), 5 * height/6, imgPato));  // Patos en la fila inferior
     }
   }
   
