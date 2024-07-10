@@ -1,14 +1,14 @@
 class GameObject {
-  float x, y;  // Posición del objeto
-  PImage imagen;  // Imagen del objeto
-  
+  float x, y;
+  PImage imagen;
+
   GameObject(float x, float y, PImage imagen) {
     this.x = x;
     this.y = y;
     this.imagen = imagen;
   }
-  
+
   void mostrar() {
-    image(imagen, x, y);  // Mostrar la imagen en la posición x, y
+    image(imagen, x, y);
   }
 }

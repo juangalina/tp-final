@@ -1,54 +1,55 @@
 ArrayList<Pato> patos;
 
 class SpawnerPatos {
-  PImage imgPato;  // Imagen de los patos
-  
+  PImage imgPato;
+  int numPatosIniciales = 15;
+
   SpawnerPatos(PImage imgPato) {
     this.imgPato = imgPato;
     patos = new ArrayList<Pato>();
-    spawnPatos();
+    spawnPatos(numPatosIniciales);
   }
-  
-  void spawnPatos() {
-    for (int i = 0; i < 5; i++) {
-      patos.add(new Pato(-random(100, 5500), height/6, imgPato));  // Patos en la fila superior
-      patos.add(new Pato(-random(100, 5500), height/2, imgPato));  // Patos en la fila central
-      patos.add(new Pato(-random(100, 5500), 5 * height/6, imgPato));  // Patos en la fila inferior
+
+  void spawnPatos(int cantidad) {
+    for (int i = 0; i < cantidad; i++) {
+      patos.add(new Pato(-imgPato.width - random(100, 300), random(height), imgPato));
     }
   }
-  
+
   void actualizar() {
     for (int i = patos.size() - 1; i >= 0; i--) {
       Pato pato = patos.get(i);
       pato.mover();
       if (pato.fueraDePantalla()) {
-        patos.remove(i);  // Eliminar patos que están fuera de la pantalla
+        pato.resetPosition();
       }
     }
-    if (patos.size() < 15) {
-      spawnPatos();  // Generar más patos si hay menos de 15
+    if (patos.size() < numPatosIniciales) {
+      spawnPatos(numPatosIniciales - patos.size());
     }
   }
-  
+
   void mostrar() {
     for (Pato pato : patos) {
       pato.mostrar();
     }
   }
-  
+
   void verificarColisiones(Mira mira) {
     for (Pato pato : patos) {
-      pato.verificarColision(mira);  // Marcar el pato como colisionado si hay colisión
+      pato.verificarColision(mira);
     }
   }
 
-  void verificarClic(float mouseX, float mouseY) {
+  void verificarClic(float mouseX, float mouseY, HUD hud) {
     for (int i = patos.size() - 1; i >= 0; i--) {
       Pato pato = patos.get(i);
-      if (pato.colisionado && 
+      if (pato.colisionado &&
           mouseX > pato.x && mouseX < pato.x + pato.imagen.width &&
           mouseY > pato.y && mouseY < pato.y + pato.imagen.height) {
-        patos.remove(i);  // Eliminar el pato si está colisionado y hay un clic sobre él
+        patos.remove(i);
+        hud.incrementarPuntaje();
+        return;
       }
     }
   }
