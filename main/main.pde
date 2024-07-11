@@ -11,6 +11,9 @@ SpawnerPatos spawner;
 Pistola pistola;
 HUD hud;
 Menu menu;
+GameOver gameOver; // Nueva instancia de GameOver
+
+boolean juegoActivo = true; // Variable para controlar el estado del juego
 
 void setup() {
   size(800, 600);
@@ -38,6 +41,7 @@ void setup() {
 
   hud = new HUD();
   menu = new Menu();
+  gameOver = new GameOver(); // Inicializar GameOver
 
   musicaMenu.loop(); // Reproducir la música del menú en bucle
 }
@@ -46,7 +50,7 @@ void draw() {
   if (menu.visible) {
     menu.mostrar();
     menu.manejarInput();
-  } else {
+  } else if (juegoActivo) { // Verificar si el juego está activo
     background(255);
     image(fondo, 0, 0, width, height);
     mira.seguirMouse();
@@ -60,12 +64,23 @@ void draw() {
     pistola.mostrar();
 
     hud.mostrar();
+  } else { // Si el juego no está activo, mostrar GameOver
+    gameOver.mostrar(hud.puntaje);
+    if (gameOver.manejarInput()) {
+      reiniciarJuego(); // Función para reiniciar el juego
+    }
   }
 }
 
 void mousePressed() {
-  if (!menu.visible) {
+  if (!menu.visible && juegoActivo) {
     sonidoDisparo.trigger(); // Reproducir el sonido de disparo
     spawner.verificarClic(mouseX, mouseY, hud);
   }
+}
+
+void reiniciarJuego() {
+  hud = new HUD(); // Reiniciar HUD
+  spawner = new SpawnerPatos(loadImage("pato.png")); // Reiniciar Spawner de patos
+  juegoActivo = true; // Activar el juego de nuevo
 }

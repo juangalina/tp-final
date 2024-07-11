@@ -1,18 +1,23 @@
-ArrayList<Pato> patos;
-
 class SpawnerPatos {
   PImage imgPato;
   int numPatosIniciales = 15;
+  int patosFueraDePantalla = 0; // Contador de patos que han salido de la pantalla
+  int limitePatosFuera = 10; // Límite de patos que pueden salir antes de mostrar Game Over
+
+  ArrayList<Pato> patos; // Definir el ArrayList para los patos
 
   SpawnerPatos(PImage imgPato) {
     this.imgPato = imgPato;
+    this.imgPato.resize(50, 50); // Redimensionar la imagen aquí
     patos = new ArrayList<Pato>();
     spawnPatos(numPatosIniciales);
   }
 
   void spawnPatos(int cantidad) {
     for (int i = 0; i < cantidad; i++) {
-      patos.add(new Pato(-imgPato.width - random(100, 300), random(height), imgPato));
+      PImage patoImage = loadImage("pato.png");
+      patoImage.resize(50, 50); // Redimensionar la imagen aquí
+      patos.add(new Pato(-patoImage.width - random(100, 300), random(height), patoImage));
     }
   }
 
@@ -21,7 +26,14 @@ class SpawnerPatos {
       Pato pato = patos.get(i);
       pato.mover();
       if (pato.fueraDePantalla()) {
-        pato.resetPosition();
+        patos.remove(i);
+        patosFueraDePantalla++;
+        if (patosFueraDePantalla > limitePatosFuera) {
+          juegoActivo = false; // Desactivar el juego si se supera el límite
+        }
+        PImage patoImage = loadImage("pato.png");
+        patoImage.resize(50, 50); // Redimensionar la imagen aquí
+        patos.add(new Pato(-patoImage.width - random(100, 300), random(height), patoImage)); // Respawn del pato
       }
     }
     if (patos.size() < numPatosIniciales) {
