@@ -16,14 +16,13 @@ class Menu {
   }
 
   void manejarInput() {
-    if (keyPressed) {
-      if (key == ENTER) {
-        visible = false;
-        musicaMenu.pause(); // Pausar la música del menú
-        musicaPartida.loop(); // Reproducir la música de la partida en bucle
-      } else if (key == ESC) {
-        exit();
-      }
+    if (key == ENTER) {
+      visible = false;
+      juegoActivo = true;
+      musicaMenu.pause();
+      musicaPartida.loop();
+    } else if (key == ESC) {
+      exit();
     }
   }
 }

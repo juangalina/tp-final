@@ -3,6 +3,7 @@ import ddf.minim.*;
 Minim minim;
 AudioPlayer musicaMenu;
 AudioPlayer musicaPartida;
+AudioPlayer musicaGameOver; // Nueva música para Game Over
 AudioSample sonidoDisparo;
 
 PImage fondo;
@@ -11,9 +12,9 @@ SpawnerPatos spawner;
 Pistola pistola;
 HUD hud;
 Menu menu;
-GameOver gameOver; // Nueva instancia de GameOver
+GameOver gameOver;
 
-boolean juegoActivo = true; // Variable para controlar el estado del juego
+boolean juegoActivo = false;
 
 void setup() {
   size(800, 600);
@@ -22,6 +23,7 @@ void setup() {
   // Cargar la música
   musicaMenu = minim.loadFile("musica_menu.mp3");
   musicaPartida = minim.loadFile("musica_partida.mp3");
+  musicaGameOver = minim.loadFile("musica_gameover.mp3"); // Cargar la música de Game Over
 
   // Cargar el sonido de disparo
   sonidoDisparo = minim.loadSample("sonido_disparo.mp3");
@@ -41,16 +43,15 @@ void setup() {
 
   hud = new HUD();
   menu = new Menu();
-  gameOver = new GameOver(); // Inicializar GameOver
+  gameOver = new GameOver();
 
-  musicaMenu.loop(); // Reproducir la música del menú en bucle
+  musicaMenu.loop();
 }
 
 void draw() {
   if (menu.visible) {
     menu.mostrar();
-    menu.manejarInput();
-  } else if (juegoActivo) { // Verificar si el juego está activo
+  } else if (juegoActivo) {
     background(255);
     image(fondo, 0, 0, width, height);
     mira.seguirMouse();
@@ -64,23 +65,33 @@ void draw() {
     pistola.mostrar();
 
     hud.mostrar();
-  } else { // Si el juego no está activo, mostrar GameOver
+  } else {
     gameOver.mostrar(hud.puntaje);
-    if (gameOver.manejarInput()) {
-      reiniciarJuego(); // Función para reiniciar el juego
-    }
   }
 }
 
 void mousePressed() {
   if (!menu.visible && juegoActivo) {
-    sonidoDisparo.trigger(); // Reproducir el sonido de disparo
+    sonidoDisparo.trigger();
     spawner.verificarClic(mouseX, mouseY, hud);
   }
 }
 
+void keyPressed() {
+  if (menu.visible) {
+    menu.manejarInput();
+  } else if (!juegoActivo) {
+    if (key == ' ') {
+      reiniciarJuego();
+    }
+  }
+}
+
 void reiniciarJuego() {
-  hud = new HUD(); // Reiniciar HUD
-  spawner = new SpawnerPatos(loadImage("pato.png")); // Reiniciar Spawner de patos
-  juegoActivo = true; // Activar el juego de nuevo
+  hud = new HUD();
+  spawner = new SpawnerPatos(loadImage("pato.png"));
+  juegoActivo = true;
+  musicaPartida.loop();
+  musicaMenu.pause();
+  musicaGameOver.pause(); // Pausar la música de Game Over
 }
