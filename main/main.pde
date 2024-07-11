@@ -3,7 +3,7 @@ import ddf.minim.*;
 Minim minim;
 AudioPlayer musicaMenu;
 AudioPlayer musicaPartida;
-AudioPlayer musicaGameOver; // Nueva música para Game Over
+AudioPlayer musicaGameOver; // Nuevo AudioPlayer para la música de Game Over
 AudioSample sonidoDisparo;
 
 PImage fondo;
@@ -12,9 +12,9 @@ SpawnerPatos spawner;
 Pistola pistola;
 HUD hud;
 Menu menu;
-GameOver gameOver;
+GameOver gameOver; // Nueva instancia de GameOver
 
-boolean juegoActivo = false;
+boolean juegoActivo = true; // Variable para controlar el estado del juego
 
 void setup() {
   size(800, 600);
@@ -45,7 +45,7 @@ void setup() {
   menu = new Menu();
   gameOver = new GameOver();
 
-  musicaMenu.loop();
+  musicaMenu.loop(); // Reproducir la música del menú en bucle
 }
 
 void draw() {
@@ -53,7 +53,7 @@ void draw() {
     menu.mostrar();
   } else if (juegoActivo) {
     background(255);
-    image(fondo, 0, 0, width, height);
+    image(fondo, 0, 0, width, height); // Mostrar el fondo
     mira.seguirMouse();
     mira.mostrar();
 

@@ -3,6 +3,9 @@ class SpawnerPatos {
   int numPatosIniciales = 15;
   int limitePatosFuera = 10; // Límite de patos que pueden salir antes de mostrar Game Over
 
+  // Coordenadas Y de los tres carriles
+  int[] carrilesY = {200, 300, 100}; // Ajustar estos valores según la imagen
+
   ArrayList<Pato> patos;
 
   SpawnerPatos(PImage imgPato) {
@@ -16,7 +19,8 @@ class SpawnerPatos {
     for (int i = 0; i < cantidad; i++) {
       PImage patoImage = loadImage("pato.png");
       patoImage.resize(50, 50);
-      patos.add(new Pato(-patoImage.width - random(100, 300), random(height), patoImage));
+      int carrilY = carrilesY[(int)random(carrilesY.length)]; // Seleccionar un carril aleatorio
+      patos.add(new Pato(-patoImage.width - random(100, 300), carrilY, patoImage));
     }
   }
 
@@ -34,7 +38,8 @@ class SpawnerPatos {
         } else {
           PImage patoImage = loadImage("pato.png");
           patoImage.resize(50, 50);
-          patos.add(new Pato(-patoImage.width - random(100, 300), random(height), patoImage));
+          int carrilY = carrilesY[(int)random(carrilesY.length)]; // Seleccionar un carril aleatorio
+          patos.add(new Pato(-patoImage.width - random(100, 300), carrilY, patoImage));
         }
       }
     }
