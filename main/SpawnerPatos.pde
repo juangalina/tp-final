@@ -4,7 +4,7 @@ class SpawnerPatos {
   int limitePatosFuera = 10; // Límite de patos que pueden salir antes de mostrar Game Over
 
   // Coordenadas Y de los tres carriles
-  int[] carrilesY = {200, 300, 100}; // Ajustar estos valores según la imagen
+  int[] carrilesY = {100, 300, 200}; // Ajustar estos valores según la imagen
 
   ArrayList<Pato> patos;
 
